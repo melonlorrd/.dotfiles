@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run this as root."
+  exit 1
+fi
+
+set -euxo pipefail
+
+dnf upgrade -y
+
+dnf copr enable -y sneexy/zen-browser
+dnf copr enable -y brycensranch/gpu-screen-recorder-git
+dnf copr enable -y trixieua/morewaita-icon-theme
+
+dnf install -y \
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
+
+cat <<EOF | tee -a /etc/yum.repos.d/vscodium.repo
+[gitlab.com_paulcarroty_vscodium_repo]
+name=download.vscodium.com
+baseurl=https://download.vscodium.com/rpms/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
+metadata_expire=1h
+EOF
+
+dnf install -y \
+  gnome-shell gnome-tweaks gnome-clocks gnome-calendar nautilus loupe papers \
+  kitty zen-browser codium \
+  adw-gtk3-theme morewaita-icon-theme google-noto-fonts-all \
+  gpu-screen-recorder-gtk \
+  @development-tools stow podman-compose flatpak golang systemd-container
+
+dnf swap -y ffmpeg-free ffmpeg --allowerasing
+dnf swap -y mesa-va-drivers mesa-va-drivers-freeworld --allowerasing
+dnf swap -y mesa-vdpau-drivers mesa-vdpau-drivers-freeworld --allowerasing
+
+systemctl set-default graphical.target
