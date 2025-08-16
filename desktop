@@ -7,44 +7,10 @@ fi
 
 set -euxo pipefail
 
-mkdir -p ~/.local/bin
 rm ~/.bashrc ~/.bash_profile
 stow Home -t ~/
-
-ln -s /usr/bin/kitty ~/.local/bin/gnome-terminal
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak remote-modify flathub --enable
 
-flatpak install -y flathub org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
-
-flatpak install -y flathub com.mattjakeman.ExtensionManager com.valvesoftware.Steam \
-    com.modrinth.ModrinthApp md.obsidian.Obsidian
-
-gsettings set org.gnome.shell.keybindings toggle-application-view []
-gsettings set org.gnome.shell.keybindings toggle-overview []
-gsettings set org.gnome.shell.keybindings toggle-quick-settings []
-gsettings set org.gnome.shell.app-switcher current-workspace-only true
-
-gsettings set org.gnome.mutter dynamic-workspaces false
-gsettings set org.gnome.mutter center-new-windows true
-
-gsettings set org.gnome.desktop.wm.preferences num-workspaces 4
-gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
-gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Shift><Super>f']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>a']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>s']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>d']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>f']"
-gsettings set org.gnome.desktop.session idle-delay "uint32 0"
-gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
-gsettings set org.gnome.desktop.interface clock-format '24h'
-
-gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
-
-gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
-gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Super>Return"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "kitty"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Terminal"
+flatpak install -y flathub com.valvesoftware.Steam md.obsidian.Obsidian
