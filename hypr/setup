@@ -10,7 +10,8 @@ set -euxo pipefail
 dnf upgrade -y
 
 dnf copr enable -y brycensranch/gpu-screen-recorder-git
-dnf copr enable -y trixieua/morewaita-icon-theme
+dnf copr enable -y solopasha/hyprland
+dnf copr enable -y sneexy/zen-browser
 
 dnf install -y \
 	https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
@@ -29,15 +30,17 @@ gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
 metadata_expire=1h
 EOF
 
-dnf remove -y gnome-contacts gnome-weather gnome-maps simple-scan totem snapshot \
-	evince gnome-connections baobab gnome-logs gnome-abrt libreoffice-* gnome-tour \
-	yelp rhythmbox firefox gnome-console gnome-boxes
+dnf install --setopt=install_weak_deps=False -y hyprland
 
-dnf install -y cascadia-code-nf-fonts chromium-browser kitty stow podman-compose \
-	secrets gpu-screen-recorder-gtk @development-tools golang virt-manager \
-	wireshark kubernetes1.32-client ansible opentofu helm micro wl-clipboard codium \
-	fragments adw-gtk3-theme gnome-tweaks papers morewaita-icon-theme SDL2-devel \
-	mpv mpv-mpris
+dnf install brightnessctl network-manager-applet mako swaybg hyprpolkitagent \
+    xdg-desktop-portal-hyprland wofi swaylock swayidle greetd tuigreet waybar
+
+dnf install -y zen-browser kitty keepassxc gpu-screen-recorder-gtk codium fragments \
+    mpv mpv-mpris flatseal 
+
+dnf install -y stow podman podman-compose @development-tools golang virt-manager \
+    wireshark kubernetes1.32-client ansible opentofu helm micro wl-clipboard \
+    SDL2-devel 
 
 usermod -aG libvirt melonlorrd
 usermod -aG wireshark melonlorrd

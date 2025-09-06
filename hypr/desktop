@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$EUID" -eq 0 ]; then
+    echo "Please don't run this as root."
+    exit 1
+fi
+
+set -euxo pipefail
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remote-modify flathub --enable
+
+flatpak install -y flathub om.valvesoftware.Steam \
+	com.modrinth.ModrinthApp md.obsidian.Obsidian com.github.tchx84.Flatseal
